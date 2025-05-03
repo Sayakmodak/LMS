@@ -15,7 +15,11 @@ import {
     TabsList,
     TabsTrigger,
 } from "@/components/ui/tabs"
-import { useState } from "react"
+import { useLoginUserMutation, useRegisterUserMutation } from "@/features/api/authApi"
+import { Loader2 } from "lucide-react"
+import { useEffect, useState } from "react"
+import { toast } from "sonner"
+
 
 export function Login() {
     const [signUp, setSignup] = useState({
@@ -27,6 +31,27 @@ export function Login() {
         email: "",
         password: ""
     });
+
+    const [registerUser, { data: registerData, error: registerError, isLoading: registerIsLoading, isSuccess: registerIsSuccess }] = useRegisterUserMutation();
+
+    // console.log(registerData, registerIsSuccess, registerIsLoading);
+
+    const [loginUser, { data: loginData, error: loginError, isLoading: loginIsLoading, isSuccess: loginIsSuccess }] = useLoginUserMutation();
+
+    useEffect(() => {
+        if (registerIsSuccess && registerData) {
+            toast.success(registerData.message || "Account created")
+        }
+        if (registerError) {
+            toast.error(registerData.data.message || "Sign Up failed")
+        }
+        if (loginIsSuccess && loginData) {
+            toast.success(loginData.message || "Login successful")
+        }
+        if (loginError) {
+            toast.error(loginData.data.message || "Login falied")
+        }
+    }, [registerData, loginData, loginIsLoading, registerIsLoading]);
 
     /* it's not optimized
     const handleSignUpOnclick = () => {
@@ -61,12 +86,14 @@ export function Login() {
         }
     }
 
-    const handleOnClick = (type) => {
+    const handleOnClickRegistration = async (type) => {
         if (type == "login") {
-            console.log(login);
+            // console.log(login);
+            await loginUser(login);
         }
         else {
-            console.log(signUp);
+            // console.log(signUp);
+            await registerUser(signUp);
         }
     }
 
@@ -101,7 +128,13 @@ export function Login() {
                             </div>
                         </CardContent>
                         <CardFooter>
-                            <Button onClick={() => handleOnClick("signup")}>Signup</Button>
+                            <Button disabled={registerIsLoading} onClick={() => handleOnClickRegistration("signup")}>{
+                                registerIsLoading ? (
+                                    <>
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    </>
+                                ) : "Signup"
+                            }</Button>
                         </CardFooter>
                     </Card>
                 </TabsContent>
@@ -125,7 +158,13 @@ export function Login() {
                             </div>
                         </CardContent>
                         <CardFooter>
-                            <Button onClick={() => handleOnClick("login")}>Login</Button>
+                            <Button disabled={loginIsLoading} onClick={() => handleOnClickRegistration("login")}>{
+                                loginIsLoading ? (
+                                    <>
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    </>
+                                ) : "Login"
+                            }</Button>
                         </CardFooter>
                     </Card>
                 </TabsContent>
