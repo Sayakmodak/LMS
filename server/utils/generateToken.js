@@ -20,6 +20,4 @@ const generateToken = (res, user, message) => {
         });
 }
 
-module.exports = {
-    generateToken
-}
+export default generateToken;

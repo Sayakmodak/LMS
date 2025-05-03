@@ -1,10 +1,10 @@
 import { User } from "../models/user.model.js"
 import bcrypt from 'bcryptjs'
-import { generateToken } from "../utils/generateToken.js";
+import generateToken from "../utils/generateToken.js";
 // import jwt from 'jsonwebtoken';
 
 
-const register = async (req, res) => {
+export const register = async (req, res) => {
     try {
         const { name, email, password } = req.body;
 
@@ -31,7 +31,7 @@ const register = async (req, res) => {
         })
         return res.status(200).json({
             success: true,
-            message: "user created", userCreation
+            message: "Account created" // we can not send userCreation for security issue
         })
     } catch (error) {
         console.log(error);
@@ -43,8 +43,7 @@ const register = async (req, res) => {
 }
 
 
-
-const login = async (req, res) => {
+export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
@@ -70,13 +69,18 @@ const login = async (req, res) => {
             })
         }
         // generate token for authentication
-        generateToken(res, user, `hello ${user.name}`);
+        generateToken(res, user, `welcome ${user.name}`);
 
         /*
         const token = jwt.sign({ userId: user._id }, "secret_key", { expiresIn: '1d' });
-        return res.status(200).cookie("token", token).json({
+        return res.status(200).cookie("token", token, {
+            httpOnly: true,
+            sameSite: "strict",
+            maxAge: 24 * 60 * 60 * 1000
+        }).json({
             message: true,
             token
+            user
         })*/
 
     } catch (error) {
@@ -87,8 +91,3 @@ const login = async (req, res) => {
         })
     }
 }
-
-module.exports = {
-    register,
-    login
-};
