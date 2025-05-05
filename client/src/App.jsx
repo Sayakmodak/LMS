@@ -1,13 +1,32 @@
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './App.css'
-import Navbar from './comp/Navbar'
 import { Login } from './pages/Login'
+import HeroSection from './pages/student/HeroSection'
+import MainLayout from './layout/MainLayout'
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <MainLayout />,
+    children: [
+      {
+        path: "/",
+        index: true,
+        element: <HeroSection />,
+      },
+      {
+        path: "login",
+        element: <Login />
+      }
+    ],
+  },
+])
 
 function App() {
 
   return (
     <main>
-      <Navbar />
-      <Login />
+      <RouterProvider router={router} />
     </main>
   )
 }
