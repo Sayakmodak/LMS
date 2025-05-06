@@ -3,7 +3,7 @@ import React from 'react'
 import Course from './Course';
 
 const Courses = () => {
-    const isLoading = true;
+    const isLoading = false;
 
     return (
         <div className='bg-gray-50'>
@@ -13,7 +13,10 @@ const Courses = () => {
                     {
                         isLoading ? Array.from({ length: 8 }).map((_, index) => {
                             return <CourseSkeleton key={index} />
-                        }) : <Course />
+                        }) : Array.from({ length: 6 }).map((elm, index) => {
+                            return <Course key={index} />
+                        })
+
                     }
                 </div>
 
