@@ -4,6 +4,7 @@ import { Login } from './pages/Login'
 import HeroSection from './pages/student/HeroSection'
 import MainLayout from './layout/MainLayout'
 import Courses from './pages/student/Courses'
+import MyLearning from './pages/student/MyLearning'
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <Login />
+      },
+      {
+        path: "my-learning",
+        element: <MyLearning />
       }
     ],
   },

@@ -27,7 +27,7 @@ const Courses = () => {
 
 export default Courses
 
-const CourseSkeleton = () => {
+export const CourseSkeleton = () => {
     return (
         <div className="bg-gray-200 shadow-md hover:shadow-lg transition-shadow rounded-lg overflow-hidden h-[15rem]">
             <Skeleton className="w-full h-36" />
