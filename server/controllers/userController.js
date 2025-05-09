@@ -91,3 +91,68 @@ export const login = async (req, res) => {
         })
     }
 }
+
+export const logOut = async (req, res) => {
+    try {
+        return res.status(200).cookie("token", "", { maxAge: 0 }).json({
+            success: true,
+            message: "logout successfully"
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({
+            success: false,
+            message: "failed to logout"
+        })
+    }
+}
+
+
+export const getUserProfile = async (req, res) => {
+    try {
+        const userId = req.id;
+        const user = await User.findById(userId).select("-password");
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "profile not found"
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            user
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({
+            success: false,
+            message: "failed to get the profile"
+        })
+    }
+}
+
+export const updateProfile = async (req, res) => {
+    try {
+        const userId = req.id;
+
+        const { name } = req.body;
+        const profilePhoto = req.file;
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "user not found"
+            })
+        }
+
+
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({
+            success: false,
+            message: "failed to update the profile"
+        })
+    }
+}
