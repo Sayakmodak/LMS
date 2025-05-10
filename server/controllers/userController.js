@@ -1,6 +1,7 @@
 import { User } from "../models/user.model.js"
 import bcrypt from 'bcryptjs'
 import generateToken from "../utils/generateToken.js";
+import { deleteMediaFromCloudinary, uploadMedia } from "../utils/cloudinary.js";
 // import jwt from 'jsonwebtoken';
 
 
@@ -139,7 +140,6 @@ export const updateProfile = async (req, res) => {
         const profilePhoto = req.file;
 
         const user = await User.findById(userId);
-
         if (!user) {
             return res.status(404).json({
                 success: false,
@@ -147,6 +147,21 @@ export const updateProfile = async (req, res) => {
             })
         }
 
+        if (user.userProfileImg) {
+            // extract the publicId from the existing profileImg
+            const publicId = user.userProfileImg.split("/").pop().split(".")[0];
+            deleteMediaFromCloudinary(publicId);
+        }
+
+        const cloudResponse = await uploadMedia(profilePhoto.path);
+        const profileUrl = cloudResponse.secure_url;
+
+        const updatedData = { name, userProfileImg: profileUrl }; // name and profile photo will be updated
+        const updatedUser = await User.findByIdAndUpdate(userId, updatedData, { new: true }).select("-password");
+        return res.status(200).json({
+            success: true,
+            message: "User updated successfully", updatedUser
+        })
 
     } catch (error) {
         console.log(error);
