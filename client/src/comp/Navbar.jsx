@@ -9,18 +9,34 @@ import {
     DropdownMenuGroup
 } from '@/components/ui/dropdown-menu';
 import { Menu, School } from 'lucide-react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Darkmode from './Darkmode'
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Separator } from '@radix-ui/react-dropdown-menu';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useNavigation } from 'react-router-dom';
+import { useLogoutUserMutation } from '@/features/api/authApi';
+import { toast } from 'sonner';
 
 
 
 const Navbar = () => {
     const user = true;
+    const [logoutUser, { data, error, isError, isSuccess }] = useLogoutUserMutation();
+    const navigate = useNavigate();
+
+    const logoutHandler = async () => {
+        await logoutUser();
+    }
+
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success(data.message || "You are logged out")
+            navigate("/login")
+        }
+        if (isError) {
+            toast.error(error.message || "Failed to logout")
+        }
+    }, [isSuccess, data])
 
     return (
         <div className='h-16 dark:bg-[#0a0a0a] bg-white border-b dark:border-b-gray-200 fixed top-0 left-0 right-0 duration-300 z-10'>
@@ -45,8 +61,8 @@ const Navbar = () => {
                                 <DropdownMenuSeparator />
                                 <DropdownMenuGroup>
                                     <DropdownMenuItem><Link to="my-learning">My learning</Link></DropdownMenuItem>
-                                    <DropdownMenuItem>Edit profile</DropdownMenuItem>
-                                    <DropdownMenuItem>Log out</DropdownMenuItem>
+                                    <DropdownMenuItem><Link to="profile">Edit profile</Link></DropdownMenuItem>
+                                    <DropdownMenuItem onClick={logoutHandler}>Log out</DropdownMenuItem>
                                 </DropdownMenuGroup>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem>Dashboard</DropdownMenuItem>

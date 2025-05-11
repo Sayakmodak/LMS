@@ -37,9 +37,31 @@ export const authApi = createApi({
                     console.log(error);
                 }
             }
+        }),
+
+        logoutUser: builder.mutation({
+            query: () => ({
+                url: "logout",
+                method: "GET",
+            })
+        }),
+
+        loadUser: builder.query({
+            query: () => ({
+                url: "profile",
+                method: "GET"
+            })
+        }),
+
+        updateUser: builder.mutation({
+            query: (updateFormData) => ({
+                url: "profile/update",
+                method: "PUT",
+                body: updateFormData
+            }),
         })
     }),
 })
 
 
-export const { useLoginUserMutation, useRegisterUserMutation } = authApi;
+export const { useLoginUserMutation, useLogoutUserMutation, useRegisterUserMutation, useLoadUserQuery, useUpdateUserMutation } = authApi;
