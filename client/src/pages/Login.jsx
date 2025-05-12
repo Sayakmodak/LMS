@@ -46,14 +46,14 @@ export function Login() {
             toast.success(registerData.message || "Account created")
         }
         if (registerError) {
-            toast.error(registerData.data.message || "Sign Up failed")
+            toast.error(registerError.data.message || "Sign Up failed")
         }
         if (loginIsSuccess && loginData) {
             toast.success(loginData.message || "Login successful")
             navigate("/")
         }
         if (loginError) {
-            toast.error(loginData.data.message || "Login falied")
+            toast.error(loginError.data.message || "Login falied")
         }
     }, [registerData, loginData, loginIsLoading, registerIsLoading]);
 

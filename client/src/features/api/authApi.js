@@ -1,6 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { userLoggedIn } from '../authSlice';
+import { userLoggedIn, userLoggedOut } from '../authSlice';
+import { CodeSquare } from 'lucide-react';
 
 const base_url = "http://localhost:8080/api/auth/user/";
 
@@ -43,14 +44,29 @@ export const authApi = createApi({
             query: () => ({
                 url: "logout",
                 method: "GET",
-            })
+            }),
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    dispatch(userLoggedOut());
+                } catch (error) {
+                    console.log(error);
+                }
+            }
         }),
 
         loadUser: builder.query({
             query: () => ({
                 url: "profile",
                 method: "GET"
-            })
+            }),
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                const result = await queryFulfilled;
+                try {
+                    dispatch(userLoggedIn({ user: result.data.user }))
+                } catch (error) {
+                    console.log(error)
+                }
+            }
         }),
 
         updateUser: builder.mutation({
