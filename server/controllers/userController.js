@@ -50,7 +50,7 @@ export const login = async (req, res) => {
         if (!email || !password) {
             return res.status(400).json({
                 success: false,
-                message: "all fields are required"
+                message: "All fields are required"
             })
         }
 
@@ -58,7 +58,7 @@ export const login = async (req, res) => {
         if (!user) {
             return res.status(400).json({
                 success: false,
-                message: "invalid credentials"
+                message: "Invalid credentials"
             })
         }
 
@@ -66,7 +66,7 @@ export const login = async (req, res) => {
         if (!isMatchedPassword) {
             res.status(400).json({
                 success: false,
-                message: "invalid credentials"
+                message: "Invalid credentials"
             })
         }
         // generate token for authentication
@@ -97,13 +97,13 @@ export const logOut = async (req, res) => {
     try {
         return res.status(200).cookie("token", "", { maxAge: 0 }).json({
             success: true,
-            message: "logout successfully"
+            message: "Logout successfully"
         })
     } catch (error) {
         console.log(error);
         return res.status(400).json({
             success: false,
-            message: "failed to logout"
+            message: "Failed to logout"
         })
     }
 }
