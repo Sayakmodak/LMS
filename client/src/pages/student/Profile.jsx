@@ -28,7 +28,7 @@ function Profile() {
     }
 
     const handleUpdateOnClick = async () => {
-        console.log(name, userImg);
+        // console.log(name, userImg);
         const formData = new FormData();
         formData.append("name", name);
         formData.append("userImg", userImg);
