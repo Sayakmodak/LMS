@@ -10,7 +10,10 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useNavigate, useNavigation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { useGetCreatorCourseQuery } from '@/features/api/courseApi'
+import { Edit } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
 
 const invoices = [
     {
@@ -59,11 +62,15 @@ const invoices = [
 
 const CourseTable = () => {
     const navigate = useNavigate();
+    const { data, isLoading, isSuccess } = useGetCreatorCourseQuery();
+    console.log(data);
+
+
     return (
-        <div className='mt-24'>
+        <div className='mt-24 p-6'>
             <Button onClick={() => navigate(`create`)}>Create Course</Button>
             <Table>
-                <TableCaption>A list of your recent invoices.</TableCaption>
+                <TableCaption>A list of your recent courses.</TableCaption>
                 <TableHeader>
                     <TableRow>
                         <TableHead className="w-[100px]">Price</TableHead>
@@ -73,21 +80,24 @@ const CourseTable = () => {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {invoices.map((invoice) => (
-                        <TableRow key={invoice.invoice}>
-                            <TableCell className="font-medium">{invoice.invoice}</TableCell>
-                            <TableCell>{invoice.paymentStatus}</TableCell>
-                            <TableCell>{invoice.paymentMethod}</TableCell>
-                            <TableCell className="text-right">{invoice.totalAmount}</TableCell>
+                    {
+                        isLoading && (
+                            <TableRow>
+                                <TableCell colSpan={4} className="text-center">Loading...</TableCell>
+                            </TableRow>
+                        )
+                    }
+
+                    {isSuccess && data?.courses?.length > 0 && data.courses.map((course) => (
+                        <TableRow key={course._id}>
+                            <TableCell className="font-medium">{course?.price || "NA"}</TableCell>
+                            <TableCell><Badge>{course.isPublished ? "Published" : "Draft"}</Badge></TableCell>
+                            <TableCell>{course.courseTitle}</TableCell>
+                            <TableCell className="text-right"> <Button size="sm" variant="ghost"><Edit /></Button></TableCell>
                         </TableRow>
                     ))}
+
                 </TableBody>
-                <TableFooter>
-                    <TableRow>
-                        <TableCell colSpan={3}>Total</TableCell>
-                        <TableCell className="text-right">$2,500.00</TableCell>
-                    </TableRow>
-                </TableFooter>
             </Table>
         </div>
 

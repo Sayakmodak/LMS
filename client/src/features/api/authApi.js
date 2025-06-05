@@ -1,7 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { userLoggedIn, userLoggedOut } from '../authSlice';
-import { CodeSquare } from 'lucide-react';
 
 const base_url = "http://localhost:8080/api/auth/user/";
 

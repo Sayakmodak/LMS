@@ -10,17 +10,35 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select'
+import { useCreateCourseMutation } from '@/features/api/courseApi'
 import { Loader2 } from 'lucide-react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 
 const AddCourse = () => {
+    const [courseTitle, setCourseTitle] = useState("");
+    const [category, setCategory] = useState("");
     const navigate = useNavigate();
-    const isLoading = false;
 
-    const createCourseHandler = () => {
+    const [createCourse, { data, isSuccess, isError, isLoading, error }] = useCreateCourseMutation();
 
+    const createCourseHandler = async () => {
+        // console.log(category, courseTitle);
+        await createCourse({ courseTitle, category });
     }
+    const getSelectedCategory = (value) => {
+        setCategory(value)
+    }
+
+    // for toast notification
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success(data?.message || "Course created");
+            navigate(`/admin/course`);
+        }
+    }, [error, isSuccess])
+
     return (
         <div className='flex-1 mx-10 mt-24'>
             <div className='mb-4'>
@@ -31,12 +49,12 @@ const AddCourse = () => {
 
             <div className='space-y-4'>
                 <div>
-                    <Label>Title</Label>
-                    <Input type="text" placeholder='your course name' name="courseTitle" />
+                    <Label className="mb-1">Title</Label>
+                    <Input type="text" placeholder='your course name' name="courseTitle" value={courseTitle} onChange={(e) => setCourseTitle(e.target.value)} />
                 </div>
                 <div>
-                    <Label>Category</Label>
-                    <Select>
+                    <Label className="mb-1">Category</Label>
+                    <Select onValueChange={getSelectedCategory} >
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Select a category" />
                         </SelectTrigger>
