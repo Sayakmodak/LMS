@@ -17,12 +17,15 @@ import {
 } from "@/components/ui/tabs"
 import { useLoginUserMutation, useRegisterUserMutation } from "@/features/api/authApi"
 import { Loader2 } from "lucide-react"
+import { useRef } from "react"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 
 
 export function Login() {
+    const loginBtnRef = useRef(null);
+
     const [signUp, setSignup] = useState({
         name: "",
         email: "",
@@ -101,6 +104,24 @@ export function Login() {
         }
     }
 
+    const handleOnkeyDown = async (e, type) => {
+        console.log(e.key);
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (type == "login") {
+                await loginUser(login);
+            }
+            else {
+                await registerUser(signUp);
+            }
+        }
+    }
+
+    useEffect(() => {
+        // loginBtnRef.current?.focus();
+        document.getElementById("login-button")?.focus();
+    }, []);
+
     return (
         <div className="flex justify-center items-center w-full h-full mt-20">
             <Tabs defaultValue="login" className="w-[400px] ">
@@ -162,13 +183,14 @@ export function Login() {
                             </div>
                         </CardContent>
                         <CardFooter>
-                            <Button disabled={loginIsLoading} onClick={() => handleOnClickRegistration("login")}>{
-                                loginIsLoading ? (
-                                    <>
-                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    </>
-                                ) : "Login"
-                            }</Button>
+                            <Button disabled={loginIsLoading}
+                                onClick={() => handleOnClickRegistration("login")} id="login-button">{
+                                    loginIsLoading ? (
+                                        <>
+                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                        </>
+                                    ) : "Login"
+                                }</Button>
                         </CardFooter>
                     </Card>
                 </TabsContent>

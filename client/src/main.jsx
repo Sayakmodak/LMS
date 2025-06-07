@@ -7,6 +7,7 @@ import { Provider } from 'react-redux'
 import { Toaster } from './components/ui/sonner'
 import { useLoadUserQuery } from './features/api/authApi'
 import Loading from './comp/Loading.jsx'
+import { MantineProvider } from '@mantine/core'
 
 const CustomLoading = ({ children }) => {
   const { isLoading } = useLoadUserQuery();
@@ -22,10 +23,13 @@ const CustomLoading = ({ children }) => {
 createRoot(document.getElementById('root')).render(
   // <StrictMode>
   <Provider store={store}>
-    <CustomLoading>
-      <App />
-      <Toaster />
-    </CustomLoading>
+    <MantineProvider >
+      <CustomLoading>
+        <App />
+        <Toaster />
+      </CustomLoading>
+    </MantineProvider>
+
   </Provider>
   // </StrictMode>,
 )

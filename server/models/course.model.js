@@ -17,7 +17,7 @@ const courseShema = new mongoose.Schema({
     },
     courseLevel: {
         type: String,
-        enum: ["Beginer", "Intermediate", "Advance"]
+        enum: ["beginer", "intermediate", "advance"]
     },
     coursePrice: {
         type: Number

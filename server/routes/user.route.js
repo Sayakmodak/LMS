@@ -12,7 +12,5 @@ router.get("/logout", logOut);
 router.get("/profile", isAuthenticated, getUserProfile);
 router.put("/profile/update", isAuthenticated, upload.single("userImg"), updateProfile);
 
-// upload.single("profilePhoto")
-// router.route("/profile/update").put(isAuthenticated, upload.single("profilePhoto"), updateProfile);
 
 export default router;

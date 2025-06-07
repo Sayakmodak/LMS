@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Table,
     TableBody,
@@ -62,9 +62,13 @@ const invoices = [
 
 const CourseTable = () => {
     const navigate = useNavigate();
-    const { data, isLoading, isSuccess } = useGetCreatorCourseQuery();
+    const { data, isLoading, isSuccess, refetch } = useGetCreatorCourseQuery();
     console.log(data);
 
+
+    useEffect(() => {
+        refetch();
+    }, [])
 
     return (
         <div className='mt-24 p-6'>
@@ -93,7 +97,7 @@ const CourseTable = () => {
                             <TableCell className="font-medium">{course?.price || "NA"}</TableCell>
                             <TableCell><Badge>{course.isPublished ? "Published" : "Draft"}</Badge></TableCell>
                             <TableCell>{course.courseTitle}</TableCell>
-                            <TableCell className="text-right"> <Button size="sm" variant="ghost"><Edit /></Button></TableCell>
+                            <TableCell className="text-right"> <Button size="sm" variant="ghost" onClick={() => navigate(`${course._id}`)}><Edit /></Button></TableCell>
                         </TableRow>
                     ))}
 
