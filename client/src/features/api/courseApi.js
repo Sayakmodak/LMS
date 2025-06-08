@@ -9,7 +9,6 @@ export const courseApi = createApi({
     reducerPath: 'courseApi',
     tagTypes: ['fetch-creator-course'],
     baseQuery: fetchBaseQuery({
-
         baseUrl: base_url,
         credentials: 'include'
     }),
@@ -21,7 +20,7 @@ export const courseApi = createApi({
                 method: "POST",
                 body: { courseTitle, category }
             }),
-            invalidatesTags: ['fetch-creator-course']
+            invalidatesTags: ['fetch-creator-course'] // to refetch the course automatically
         }),
 
         getCreatorCourse: builder.query({
@@ -29,7 +28,7 @@ export const courseApi = createApi({
                 url: "",
                 method: "GET"
             }),
-            invalidatesTags: ['fetch-creator-course']
+            providesTags: ['fetch-creator-course'] // to save the request in the cache
         }),
 
         updateCourse: builder.mutation({
@@ -38,9 +37,32 @@ export const courseApi = createApi({
                 method: "PUT",
                 body: formData
             }),
-            invalidatesTags: ['fetch-creator-course']
+            invalidatesTags: ['fetch-creator-course'] // // to refetch the course automatically
         }),
+
+        getCourseById: builder.query({
+            query: (courseId) => ({
+                url: `/${courseId}`,
+                method: "GET"
+            }),
+        }),
+
+        createLecture: builder.mutation({
+            query: ({ courseId, lectureTitle }) => ({
+                url: `/${courseId}/lecture`,
+                method: "POST",
+                body: { lectureTitle }
+            }),
+        }),
+
+        getAllLectures: builder.query({
+            query: (courseId) => ({
+                url: `/${courseId}/lecture`,
+                method: "GET",
+            }),
+        })
+
     })
 })
 
-export const { useCreateCourseMutation, useGetCreatorCourseQuery, useUpdateCourseMutation } = courseApi;
+export const { useCreateCourseMutation, useGetCreatorCourseQuery, useUpdateCourseMutation, useGetCourseByIdQuery, useCreateLectureMutation, useGetAllLecturesQuery } = courseApi;

@@ -7,11 +7,14 @@ import '@mantine/core/styles.css';
 import RichTextEditorDemo from './RichTextEditorDemo';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Loader2 } from 'lucide-react';
-import { useUpdateCourseMutation } from '@/features/api/courseApi';
+import { useGetCourseByIdQuery, useUpdateCourseMutation } from '@/features/api/courseApi';
 import { toast } from 'sonner';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getLabelsLockup } from '@mantine/core';
+import { retry } from '@reduxjs/toolkit/query';
 
 const CourseTab = () => {
+    const navigate = useNavigate();
     const [input, setInput] = useState({
         courseTitle: "",
         courseSubtitle: "",
@@ -21,13 +24,34 @@ const CourseTab = () => {
         coursePrice: "",
         courseThumbnail: "",
     });
+    const params = useParams();
+    const courseId = params.courseId;
+
     const [thumbnailPreview, setThumbnailPreview] = useState("");
     const [updateCourse, { data, isLoading, error, isSuccess, isError }] = useUpdateCourseMutation();
 
+    const { data: getCourseByIdData, isLoading: getCourseByIdLoading } = useGetCourseByIdQuery(courseId);
+
+
+    useEffect(() => {
+        if (getCourseByIdData?.course) {
+            const course = getCourseByIdData?.course;
+            setInput({
+                ...input,
+                courseTitle: course.courseTitle,
+                courseSubtitle: course.courseSubtitle,
+                description: course.description,
+                category: course.category,
+                courseLevel: course.courseLevel,
+                coursePrice: course.coursePrice,
+                courseThumbnail: ""
+            })
+        }
+    }, [getCourseByIdData])
+
+
     const isPublished = true;
-    const params = useParams();
-    const courseId = params.courseId;
-    console.log(courseId);
+    // console.log(courseId);
 
     const onChangeEventHandler = (e) => {
         const { name, value } = e.target;
@@ -53,7 +77,7 @@ const CourseTab = () => {
     }
 
     const updateCourseHandler = async () => {
-        console.log(input);
+        // console.log(input);
         const formData = new FormData();
         formData.append("courseTitle", input.courseTitle);
         formData.append("courseSubtitle", input.courseSubtitle);
@@ -68,14 +92,24 @@ const CourseTab = () => {
     useEffect(() => {
         if (isSuccess) {
             toast.success(data.message || "Course Updated");
+            navigate(`/admin/course`)
         }
         if (error) {
             toast.error(error.data.message || "Failed to update course");
         }
     }, [isSuccess, error])
 
+
+    if (getCourseByIdLoading) {
+        return (
+            <>
+                <div className="h-screen flex justify-center items-center"><Loader2 className='w-4 h-4 animate-spin' />
+                </div>
+            </>)
+    }
+
     return (
-        <Card className="border py-6">
+        <Card className="py-6">
             <CardHeader className="flex flex-row justify-between">
                 <div>
                     <CardTitle>Course Information</CardTitle>

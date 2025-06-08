@@ -96,15 +96,13 @@ export default RichTextEditorDemo;
 import React, { useState, useRef, useMemo } from 'react';
 import JoditEditor from 'jodit-react';
 
-const Editor = ({ placeholder, input, setInput }) => {
+const Editor = ({ input, setInput }) => {
     const editor = useRef(null);
     // const [content, setContent] = useState('');
 
     const config = useMemo(() => ({
         readonly: false,
-        placeholder: placeholder || 'Start typings...'
     }),
-        [placeholder]
     );
 
     const handleOnChange = (content) => {
