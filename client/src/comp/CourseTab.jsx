@@ -10,8 +10,6 @@ import { Loader2 } from 'lucide-react';
 import { useGetCourseByIdQuery, useUpdateCourseMutation } from '@/features/api/courseApi';
 import { toast } from 'sonner';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getLabelsLockup } from '@mantine/core';
-import { retry } from '@reduxjs/toolkit/query';
 
 const CourseTab = () => {
     const navigate = useNavigate();
@@ -70,6 +68,7 @@ const CourseTab = () => {
         const file = e.target.files?.[0];
         if (file) {
             setInput({ ...input, courseThumbnail: file });
+            // to see the image on the web
             const fileReader = new FileReader;
             fileReader.onloadend = () => setThumbnailPreview(fileReader.result);
             fileReader.readAsDataURL(file);

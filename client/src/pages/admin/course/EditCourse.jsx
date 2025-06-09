@@ -13,7 +13,7 @@ const EditCourse = () => {
                 </Link>
             </div>
             <CourseTab className="h-screen flex justify-center items-center" />
-        </div >
+        </div>
     )
 }
 

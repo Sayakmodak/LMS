@@ -6,16 +6,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useCreateLectureMutation, useGetAllLecturesQuery } from '@/features/api/courseApi'
 import { toast } from 'sonner'
 import { Edit, Loader2 } from 'lucide-react'
-import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
-import { Badge } from '@/components/ui/badge'
 import Lecture from './Lecture'
 
 const CreateLecture = () => {
@@ -26,22 +16,28 @@ const CreateLecture = () => {
 
     const [createLecture, { data, isLoading, isSuccess, isError, error }] = useCreateLectureMutation();
 
-    const { data: lectureData, isLoading: lectureIsLoading, isSuccess: lectureIsSuccess, isError: lectureIsError, error: lectureError } = useGetAllLecturesQuery(courseId);
+    const { data: lectureData, isLoading: lectureIsLoading, isSuccess: lectureIsSuccess, isError: lectureIsError, error: lectureError, refetch } = useGetAllLecturesQuery(courseId);
 
-    console.log(lectureData);
 
     const handleLecture = async () => {
         await createLecture({ courseId, lectureTitle });
     }
 
+
+    // const lectures = lectureData?.lectures || [];
+
     useEffect(() => {
         if (isSuccess) {
             toast.success(data.message || "Lecture Created");
+            refetch()
         }
         if (error) {
             toast.error(error.data.message || "Failed to create lecture");
         }
     }, [isSuccess, isError, error])
+
+    console.log(lectureIsLoading);
+    console.log(lectureData);
 
     return (
         <div className='mt-24 flex-1 mx-10'>
@@ -71,9 +67,24 @@ const CreateLecture = () => {
             {/* Lisitng all the lectures */}
             <div className='mt-15'>
                 {
-                    lectureIsLoading ? (<>Loading Lectures...</>) : (lectureData.length === 0) ? (<>No lectures available</>) : (lectureData.lectures.map((lecture, index) => (
-                        <Lecture key={lecture._id} lecture={lecture} index={index} />
-                    )))
+                    lectureIsLoading ? (
+                        <><p>Loading Lectures...</p></>
+                    ) :
+                        lectureIsError ? (
+                            <><p>Failed to load lectures</p></>
+                        ) : !lectureData || !lectureData.lectures ? (
+                            <p>No lectures available</p>
+                        ) : !lectureData?.lectures?.length === 0 ? (<>
+                            <p>No lectures available</p></>
+                        ) : (lectureData?.lectures?.map((lecture, index) => (
+                            <Lecture
+                                key={lecture._id}
+                                lecture={lecture}
+                                index={index}
+                                courseId={courseId}
+                                className="mt-4"
+                            />
+                        )))
                 }
             </div>
         </div>
