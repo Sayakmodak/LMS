@@ -2,12 +2,13 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { userLoggedIn, userLoggedOut } from '../authSlice';
+// import { build } from "vite";
 
 const base_url = "http://localhost:8080/api/auth/course/"
 
 export const courseApi = createApi({
     reducerPath: 'courseApi',
-    tagTypes: ['fetch-creator-course'],
+    tagTypes: ['fetch-creator-course', 'fetch-creator-lecture'],
     baseQuery: fetchBaseQuery({
         baseUrl: base_url,
         credentials: 'include'
@@ -47,6 +48,8 @@ export const courseApi = createApi({
             }),
         }),
 
+
+        // Lectures API
         createLecture: builder.mutation({
             query: ({ courseId, lectureTitle }) => ({
                 url: `/${courseId}/lecture`,
@@ -60,9 +63,25 @@ export const courseApi = createApi({
                 url: `/${courseId}/lecture`,
                 method: "GET",
             }),
-        })
+            providesTags: ['fetch-creator-lecture']
+        }),
 
+        updateLecture: builder.mutation({
+            query: ({ courseId, lectureId, lectureTitle, isPreviewFree, uploadVideoInfo }) => ({
+                url: `/${courseId}/lecture/${lectureId}`,
+                method: "POST",
+                body: { lectureTitle, isPreviewFree, uploadVideoInfo }
+            }),
+        }),
+
+        removeLecture: builder.mutation({
+            query: (lectureId) => ({
+                url: `/lecture/${lectureId}`,
+                method: "DELETE"
+            }),
+            invalidatesTags: ['fetch-creator-lecture']
+        })
     })
 })
 
-export const { useCreateCourseMutation, useGetCreatorCourseQuery, useUpdateCourseMutation, useGetCourseByIdQuery, useCreateLectureMutation, useGetAllLecturesQuery } = courseApi;
+export const { useCreateCourseMutation, useGetCreatorCourseQuery, useUpdateCourseMutation, useGetCourseByIdQuery, useCreateLectureMutation, useGetAllLecturesQuery, useUpdateLectureMutation, useRemoveLectureMutation } = courseApi;

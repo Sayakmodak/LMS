@@ -20,7 +20,7 @@ const CreateLecture = () => {
 
 
     const handleLecture = async () => {
-        await createLecture({ courseId, lectureTitle });
+        await createLecture({ courseId, lectureTitle }); // will be available in the req.body
     }
 
 
@@ -29,7 +29,7 @@ const CreateLecture = () => {
     useEffect(() => {
         if (isSuccess) {
             toast.success(data.message || "Lecture Created");
-            refetch()
+            refetch() // this will automaticlly refetch the lectures 
         }
         if (error) {
             toast.error(error.data.message || "Failed to create lecture");
@@ -53,6 +53,7 @@ const CreateLecture = () => {
                     <Label className="mb-1">Title</Label>
                     <Input type="text" placeholder='your course name' name="courseTitle" value={lectureTitle} onChange={(e) => setLectureTitle(e.target.value)} />
                 </div>
+
                 <div className='flex items-center gap-2 mt-5'>
                     <Button variant="outline" onClick={() => navigate(`/admin/course/${courseId}`)}>Back to Course</Button>
                     <Button disabled={isLoading} onClick={handleLecture}>{
@@ -82,6 +83,7 @@ const CreateLecture = () => {
                                 lecture={lecture}
                                 index={index}
                                 courseId={courseId}
+                                lectureIsLoading={lectureIsLoading}
                                 className="mt-4"
                             />
                         )))

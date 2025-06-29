@@ -6,6 +6,7 @@ dotenv.config();
 import dbConnection from './db/connection.js';
 import userRoute from "./routes/user.route.js";
 import courseRoute from "./routes/course.route.js";
+import mediaRoute from "./routes/media.route.js";
 
 const port = process.env.PORT || 8080;
 
@@ -24,6 +25,7 @@ dbConnection()
 
 
 // all apis
+app.use("/api/v1/media", mediaRoute);
 app.use("/api/auth/user", userRoute);
 app.use("/api/auth/course", courseRoute);
 

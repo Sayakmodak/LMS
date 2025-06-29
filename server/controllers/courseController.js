@@ -62,7 +62,7 @@ export const updateCourse = async (req, res) => {
             description,
             category,
             courseLevel,
-            coursePrice } = req.body;
+            coursePrice } = req.body; // coming from the formData
         const thumbnail = req.file;
 
         let course = await Course.findById(courseId);
@@ -76,7 +76,6 @@ export const updateCourse = async (req, res) => {
         if (thumbnail) {
             if (course.courseThumbnail) {
                 const publicId = course.courseThumbnail.split("/").pop().split(".")[0];
-                console.log(publicId);
                 await deleteMediaFromCloudinary(publicId);
             }
             courseThumbnail = await uploadMedia(thumbnail.path);
@@ -109,7 +108,6 @@ export const updateCourse = async (req, res) => {
 export const getCourseById = async (req, res) => {
     try {
         const courseId = req.params.courseId;
-        console.log(courseId);
 
         const course = await Course.findById(courseId);
         if (!course) {
