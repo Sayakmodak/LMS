@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Loader2 } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import LectureTab from './lecture'
@@ -10,7 +10,7 @@ import { Switch } from '@/components/ui/switch'
 import axios from 'axios'
 import { toast } from 'sonner'
 import { Progress } from "@/components/ui/progress"
-import { useRemoveLectureMutation, useUpdateLectureMutation } from '@/features/api/courseApi'
+import { useGetLectuteByIdQuery, useRemoveLectureMutation, useUpdateLectureMutation } from '@/features/api/courseApi'
 
 
 const MEDIA_API = "http://localhost:8080/api/v1/media";
@@ -33,6 +33,10 @@ const EditLecture = () => {
 
     const [removeLecture, { data: removeLectureData, isSuccess: removeLectureIsSuccess, error: removeLectureError, isError: removeLectureIsError, isLoading: removeLectureIsLoading }] = useRemoveLectureMutation();
 
+    const { data: lectureByIdData, isSuccess: lectureByIdIsSuccess, isError: lectureByIdIsError, error: lectureByIdError, isLoading: lectureByIdIsLoading } = useGetLectuteByIdQuery(lectureId);
+
+    console.log(lectureByIdData?.lecture);
+    const lecture = lectureByIdData?.lecture;
 
     const fileChangeHandler = async (e) => {
         const file = e.target.files[0];
@@ -94,6 +98,14 @@ const EditLecture = () => {
         }
     }, [removeLectureIsSuccess, removeLectureError]);
 
+    useEffect(() => {
+        if (lecture) {
+            setLectureTitle(lecture.lectureTitle);
+            setIsPreviewFree(lecture.isPreviewFree);
+            setUploadVideoInfo(lecture.videoUrl);
+        }
+    }, [lecture]);
+
     return (
         <div>
             <div className='flex items-center justify-between mb-5 mt-24 mx-10'>
@@ -133,7 +145,6 @@ const EditLecture = () => {
                             <div className='my-4'>
                                 <Progress value={uploadProgress} className="w-[60%]" />
                                 <p>{uploadProgress}% uploaded</p>
-
                             </div>
                         )
                     }
@@ -142,7 +153,13 @@ const EditLecture = () => {
                         <Label htmlFor="airplane-mode">Preview free</Label>
                     </div>
                     <div className="mt-4">
-                        <Button onClick={editLectureHandler}>Update Lecture</Button>
+                        <Button disabled={isLoading} onClick={editLectureHandler}>
+                            {
+                                isLoading ? <>
+                                    <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                                </> : <> Update Lecture </>
+                            }
+                        </Button>
                     </div>
                 </CardContent>
             </Card>

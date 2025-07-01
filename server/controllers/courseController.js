@@ -1,4 +1,5 @@
 import { Course } from "../models/course.model.js";
+import { Lecture } from "../models/lecture.model.js";
 import { deleteMediaFromCloudinary, uploadMedia } from "../utils/cloudinary.js";
 
 export const createCourse = async (req, res) => {
@@ -124,6 +125,75 @@ export const getCourseById = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "Failed to get course by id"
+        })
+    }
+}
+
+// Publish and Unpublish Course
+export const togglePublish = async (req, res) => {
+    try {
+        const { courseId } = req.params;
+        const { publish } = req.query;  // true, false
+
+        const course = await Course.findById(courseId);
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                message: "Course not found"
+            })
+        }
+
+        course.isPublished = publish;
+        await course.save();
+
+        let coursePublishStatus;
+        if (course.isPublished) {
+            coursePublishStatus = "published"
+        }
+        else {
+            coursePublishStatus = "unpublished"
+        }
+
+
+        res.status(200).json({
+            message: `Course is ${coursePublishStatus}`
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Failed to update status"
+        })
+    }
+}
+
+// remove course
+export const removeCourse = async (req, res) => {
+    try {
+        const { courseId } = req.params;
+
+        const course = await Course.findById(courseId);
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                message: "Course not found"
+            })
+        }
+
+        // delete all the lectures inside the course
+        if (course.lectures && course.lectures.length > 0) {
+            await Lecture.deleteMany({ _id: { $in: course.lectures } })
+        }
+        // delete the course
+        await Course.findByIdAndDelete(courseId);
+        return res.status(200).json({
+            success: true,
+            message: "Course and all its lectures are deleted"
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Failed to remove the course"
         })
     }
 }

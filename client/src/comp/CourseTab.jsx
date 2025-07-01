@@ -7,7 +7,7 @@ import '@mantine/core/styles.css';
 import RichTextEditorDemo from './RichTextEditorDemo';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Loader2 } from 'lucide-react';
-import { useGetCourseByIdQuery, useUpdateCourseMutation } from '@/features/api/courseApi';
+import { useGetCourseByIdQuery, useRemoveCourseMutation, useTogglePublishMutation, useUpdateCourseMutation } from '@/features/api/courseApi';
 import { toast } from 'sonner';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -28,9 +28,10 @@ const CourseTab = () => {
     const [thumbnailPreview, setThumbnailPreview] = useState("");
     const [updateCourse, { data, isLoading, error, isSuccess, isError }] = useUpdateCourseMutation();
 
-    const { data: getCourseByIdData, isLoading: getCourseByIdLoading } = useGetCourseByIdQuery(courseId);
+    const { data: getCourseByIdData, isLoading: getCourseByIdLoading, refetch } = useGetCourseByIdQuery(courseId);
 
-
+    const [togglePublish, { }] = useTogglePublishMutation();
+    const [removeCourse, { data: removeCourseData, isSuccess: removeCourseIsSuccess, error: removeCourseError, isLoading: removeCourseIsLoading }] = useRemoveCourseMutation();
     useEffect(() => {
         if (getCourseByIdData?.course) {
             const course = getCourseByIdData?.course;
@@ -48,8 +49,20 @@ const CourseTab = () => {
     }, [getCourseByIdData])
 
 
-    const isPublished = true;
-    // console.log(courseId);
+    // const isPublished = true;
+    console.log(courseId);
+
+    const publishUnpublishHandler = async (action) => { // action == true/false
+        try {
+            const response = await togglePublish({ courseId, query: action });
+            if (response.data) {
+                refetch();
+                toast.success(response.data.message || "Course published");
+            }
+        } catch (error) {
+            toast.error("Some problem of publishing course");
+        }
+    }
 
     const onChangeEventHandler = (e) => {
         const { name, value } = e.target;
@@ -88,6 +101,10 @@ const CourseTab = () => {
         await updateCourse({ formData, courseId });
     }
 
+    const removeCourseHandler = async () => {
+        await removeCourse(courseId);
+    }
+
     useEffect(() => {
         if (isSuccess) {
             toast.success(data.message || "Course Updated");
@@ -98,6 +115,14 @@ const CourseTab = () => {
         }
     }, [isSuccess, error])
 
+    useEffect(() => {
+        if (removeCourseIsSuccess) {
+            toast.success(removeCourseData.message || "Course deleted")
+        }
+        if (removeCourseError) {
+            toast.error(removeCourseError.data.message || "Something went wrong")
+        }
+    }, [removeCourseIsSuccess, removeCourseError])
 
     if (getCourseByIdLoading) {
         return (
@@ -117,13 +142,12 @@ const CourseTab = () => {
                     </CardDescription>
                 </div>
                 <div className='space-x-2'>
-                    <Button variant="outline">
+                    <Button disabled={getCourseByIdData.course.lectures.length === 0} variant="outline" onClick={() => publishUnpublishHandler(getCourseByIdData.course.isPublished ? "false" : "true")}>
                         {
-                            isPublished ? "Unpublished" : "Published"
-
+                            getCourseByIdData.course.isPublished ? "Unpublish" : "Publish"
                         }
                     </Button>
-                    <Button>Remove Course</Button>
+                    <Button onClick={removeCourseHandler}>Remove Course</Button>
                 </div>
             </CardHeader>
             <CardContent>
