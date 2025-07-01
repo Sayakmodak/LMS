@@ -17,7 +17,7 @@ const courseShema = new mongoose.Schema({
     },
     courseLevel: {
         type: String,
-        enum: ["beginer", "intermediate", "advance"]
+        enum: ["Beginer", "Intermediate", "Advance"]
     },
     coursePrice: {
         type: Number
@@ -37,12 +37,11 @@ const courseShema = new mongoose.Schema({
             ref: "Lecture"
         }
     ],
-    creator: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-        }
-    ],
+    creator:
+    {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    },
     isPublished: {
         type: Boolean,
         default: false

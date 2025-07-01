@@ -4,7 +4,7 @@ import { CourseSkeleton } from './Courses';
 
 const MyLearning = () => {
     const isLoading = false;
-    const enrolledCourses = [1, 2];
+    const enrolledCourses = [];
 
     return (
         <div className='max-w-4xl mx-auto my-24 px-4 md:px-0'>

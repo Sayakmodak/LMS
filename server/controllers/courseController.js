@@ -31,6 +31,28 @@ export const createCourse = async (req, res) => {
     }
 }
 
+export const getAllPublishedCourse = async (req, res) => {
+    try {
+        const courses = await Course.find({ isPublished: true }).populate({ path: "creator", select: "name userProfileImg" });
+        if (!courses) {
+            return res.status(404).json({
+                success: false,
+                message: "Published courses are not found"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            courses
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Failed to get all published course"
+        })
+    }
+}
+
 export const getCreatorCourse = async (req, res) => {
     try {
         const userId = req.id;
@@ -181,7 +203,8 @@ export const removeCourse = async (req, res) => {
 
         // delete all the lectures inside the course
         if (course.lectures && course.lectures.length > 0) {
-            await Lecture.deleteMany({ _id: { $in: course.lectures } })
+            await Lecture.deleteMany({ _id: { $in: course.lectures } }) // [objectId1, objectId2, objectId3]
+
         }
         // delete the course
         await Course.findByIdAndDelete(courseId);

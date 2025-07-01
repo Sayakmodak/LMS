@@ -1,9 +1,12 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import React from 'react'
 import Course from './Course';
+import { useGetAllPublishedCourseQuery } from '@/features/api/courseApi';
 
 const Courses = () => {
-    const isLoading = false;
+    // const isLoading = true;
+    const { data, isLoading, isSuccess, isError } = useGetAllPublishedCourseQuery();
+    console.log(data?.courses);
 
     return (
         <div className='bg-gray-50'>
@@ -11,15 +14,13 @@ const Courses = () => {
                 <h2 className='font-bold text-3xl text-center mb-10'>Our Courses</h2>
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
                     {
-                        isLoading ? Array.from({ length: 8 }).map((_, index) => {
+                        isLoading ? data?.courses.map((_, index) => {
                             return <CourseSkeleton key={index} />
-                        }) : Array.from({ length: 6 }).map((elm, index) => {
-                            return <Course key={index} />
+                        }) : data?.courses.map((course, index) => {
+                            return <Course key={index} course={course} />
                         })
-
                     }
                 </div>
-
             </div>
         </div>
     )

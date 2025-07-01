@@ -24,6 +24,14 @@ export const courseApi = createApi({
             invalidatesTags: ['fetch-creator-course'] // to refetch the course automatically
         }),
 
+        // get all published course
+        getAllPublishedCourse: builder.query({
+            query: () => ({
+                url: "/published-course",
+                method: "GET",
+            })
+        }),
+
         getCreatorCourse: builder.query({
             query: () => ({
                 url: "",
@@ -99,6 +107,7 @@ export const courseApi = createApi({
             // invalidatesTags: ['fetch-creator-lecture']
         }),
 
+        // remove course
         removeCourse: builder.mutation({
             query: (courseId) => ({
                 url: `/delete/${courseId}`, // /delete/:courseId /lecture/${lectureId}
@@ -106,7 +115,9 @@ export const courseApi = createApi({
             }),
             // invalidatesTags: ['fetch-creator-lecture']
         }),
+
+
     })
 })
 
-export const { useCreateCourseMutation, useGetCreatorCourseQuery, useUpdateCourseMutation, useGetCourseByIdQuery, useCreateLectureMutation, useGetAllLecturesQuery, useUpdateLectureMutation, useRemoveLectureMutation, useGetLectuteByIdQuery, useTogglePublishMutation, useRemoveCourseMutation } = courseApi;
+export const { useCreateCourseMutation, useGetAllPublishedCourseQuery, useGetCreatorCourseQuery, useUpdateCourseMutation, useGetCourseByIdQuery, useCreateLectureMutation, useGetAllLecturesQuery, useUpdateLectureMutation, useRemoveLectureMutation, useGetLectuteByIdQuery, useTogglePublishMutation, useRemoveCourseMutation } = courseApi;

@@ -199,9 +199,9 @@ const CourseTab = () => {
                                 <SelectContent>
                                     <SelectGroup>
                                         <SelectLabel>Category</SelectLabel>
-                                        <SelectItem value="beginer">Beginer</SelectItem>
-                                        <SelectItem value="intermediate">Intermediate</SelectItem>
-                                        <SelectItem value="advance">Advance</SelectItem>
+                                        <SelectItem value="Beginer">Beginer</SelectItem>
+                                        <SelectItem value="Intermediate">Intermediate</SelectItem>
+                                        <SelectItem value="Advance">Advance</SelectItem>
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>
