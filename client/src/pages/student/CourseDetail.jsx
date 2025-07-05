@@ -4,9 +4,12 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Separator } from '@/components/ui/separator'
 import { BadgeInfo, PlayCircle } from 'lucide-react'
 import React from 'react'
+import { useParams } from 'react-router-dom'
 
 const CourseDetail = () => {
     const isPurchased = false;
+    const params = useParams()
+    const courseId = params.courseId;
 
     return (
         <div className='mt-15 space-y-5'>
@@ -57,7 +60,7 @@ const CourseDetail = () => {
                         </CardContent>
                         <CardFooter className="flex justify-center p-4">
                             {
-                                isPurchased ? (<Button className="w-full">Continue Course</Button>) : (<BuyCourseButton />)
+                                isPurchased ? (<Button className="w-full">Continue Course</Button>) : (<BuyCourseButton courseId={courseId} />)
                             }
                         </CardFooter>
                     </Card>
