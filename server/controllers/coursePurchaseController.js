@@ -1,6 +1,7 @@
 import { Course } from "../models/course.model.js";
 import { Lecture } from "../models/lecture.model.js";
 import { CoursePurchase } from "../models/coursePurchase.model.js";
+import { User } from "../models/user.model.js";
 import Stripe from "stripe";
 import dotenv from "dotenv";
 dotenv.config();
