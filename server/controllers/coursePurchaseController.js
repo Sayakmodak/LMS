@@ -4,11 +4,13 @@ import { CoursePurchase } from "../models/coursePurchase.model.js";
 import { User } from "../models/user.model.js";
 import Stripe from "stripe";
 import dotenv from "dotenv";
+import { useId } from "react";
 dotenv.config();
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const createCheckoutSession = async (req, res) => {
+    // as soon as the buy now button is clicked the create-chekout-session will be triggered
     try {
         const userId = req.id;
         const { courseId } = req.body;
@@ -79,7 +81,7 @@ export const createCheckoutSession = async (req, res) => {
     }
 }
 
-
+// Handles post-payment confirmation
 export const stripeWebhook = async (req, res) => {
     let event;
 
@@ -148,3 +150,53 @@ export const stripeWebhook = async (req, res) => {
     }
     res.status(200).send();
 };
+
+
+export const courseDetailsWithPurchasedStatus = async (req, res) => {
+    try {
+        const { courseId } = req.params;
+        const userId = req.id;
+
+        // console.log(courseId, userId);
+
+        const course = await Course.findById(courseId).populate({ path: "creator" }).populate({ path: "lectures" });
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                message: "course not found"
+            })
+        }
+
+        // if the courseId and userId matches means the course is purchased [see the createCheckoutSession and stripeWebhook controller]
+        const purchase = await CoursePurchase.findOne({ courseId, userId });
+        return res.status(200).json({
+            success: true,
+            course,
+            purchase: !!purchase
+        })
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+// get all purchased course
+export const getAllPurchasedCourses = async (req, res) => {
+    try {
+        const purchasedCourses = await CoursePurchase.find({ status: "completed" }).populate({ path: "courseId" })
+        if (!purchasedCourses) {
+            return res.status(404).json({
+                success: false,
+                message: "courses not found",
+                purchasedCourses: []
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            purchasedCourses
+        })
+    } catch (error) {
+        console.log(error);
+    }
+}
