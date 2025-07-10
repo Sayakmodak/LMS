@@ -3,7 +3,7 @@ import JoditEditor from 'jodit-react';
 
 const Editor = ({ input, setInput }) => {
     const editor = useRef(null);
-    // const [content, setContent] = useState('');
+    const [content, setContent] = useState('');
 
     const config = useMemo(() => ({
         readonly: false,
