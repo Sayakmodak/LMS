@@ -8,6 +8,7 @@ import userRoute from "./routes/user.route.js";
 import courseRoute from "./routes/course.route.js";
 import mediaRoute from "./routes/media.route.js";
 import purchaseRoute from "./routes/purchaseCourse.route.js";
+import courseProgressRoute from "./routes/courseProgress.route.js";
 const port = process.env.PORT || 8080;
 
 const app = express();
@@ -29,6 +30,7 @@ app.use("/api/v1/media", mediaRoute);
 app.use("/api/auth/user", userRoute);
 app.use("/api/auth/course", courseRoute);
 app.use("/api/v1/purchase", purchaseRoute);
+app.use("/api/v1/progress", courseProgressRoute);
 
 app.get("/", (req, res) => {
     res.send("LMS");
