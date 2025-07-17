@@ -108,7 +108,7 @@ const CourseTab = () => {
     useEffect(() => {
         if (isSuccess) {
             toast.success(data.message || "Course Updated");
-            navigate(`/admin/course`)
+            // navigate(`/admin/course`)
         }
         if (error) {
             toast.error(error.data.message || "Failed to update course");

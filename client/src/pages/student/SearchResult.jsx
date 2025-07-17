@@ -16,6 +16,9 @@ const SearchResult = ({ course }) => {
                     <Badge className='w-fit mt-2 md:mt-0'>{course.courseLevel?.charAt(0).toUpperCase() + course.courseLevel?.slice(1)}</Badge>
                 </div>
             </Link>
+            <div className='mt-4 md:mt-0 md:text-right w-full md:w-auto'>
+                <h1 className='font-bold text-lg md:text-xl'>₹{course.coursePrice}</h1>
+            </div>
         </div>
     )
 }
