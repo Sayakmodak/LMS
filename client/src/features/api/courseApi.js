@@ -2,9 +2,8 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { userLoggedIn, userLoggedOut } from '../authSlice';
-// import { build } from "vite";
 
-const base_url = "http://localhost:8080/api/auth/course/"
+const base_url = "http://localhost:8080/api/auth/course/";
 
 export const courseApi = createApi({
     reducerPath: 'courseApi',
@@ -104,7 +103,6 @@ export const courseApi = createApi({
                 url: `/${courseId}?publish=${query}`,
                 method: "PATCH"
             }),
-            // invalidatesTags: ['fetch-creator-lecture']
         }),
 
         // remove course
@@ -116,8 +114,57 @@ export const courseApi = createApi({
             // invalidatesTags: ['fetch-creator-lecture']
         }),
 
+        // search query
+        searchQuery: builder.query({
+            query: ({ query, categories, sortByPrice }) => {
+                // create the search string
+                let url = `/search?query=${encodeURIComponent(query)}`;
+
+                // append categories
+                if (categories && categories.length > 0) {
+                    const categoryString = categories.map(encodeURIComponent).join(",");
+                    url += `&categories=${categoryString}`;
+                }
+
+                // append sort by price
+                if (sortByPrice) {
+                    url += `&sortByPrice=${encodeURIComponent(sortByPrice)}`
+                }
+
+                return {
+                    url: url,
+                    method: "GET"
+                }
+            }
+        }),
+
 
     })
 })
 
-export const { useCreateCourseMutation, useGetAllPublishedCourseQuery, useGetCreatorCourseQuery, useUpdateCourseMutation, useGetCourseByIdQuery, useCreateLectureMutation, useGetAllLecturesQuery, useUpdateLectureMutation, useRemoveLectureMutation, useGetLectuteByIdQuery, useTogglePublishMutation, useRemoveCourseMutation } = courseApi;
+
+export const { useCreateCourseMutation, useGetAllPublishedCourseQuery, useGetCreatorCourseQuery, useUpdateCourseMutation, useGetCourseByIdQuery, useCreateLectureMutation, useGetAllLecturesQuery, useUpdateLectureMutation, useRemoveLectureMutation, useGetLectuteByIdQuery, useTogglePublishMutation, useRemoveCourseMutation, useSearchQueryQuery } = courseApi;
+
+
+/*getSearchCourse: builder.query({
+    query: ({ searchQuery, categories, sortByPrice }) => {
+        // Build qiery string
+        let queryString = `/search?query=${encodeURIComponent(searchQuery)}`
+
+        // append cateogry 
+        if (categories && categories.length > 0) {
+            const categoriesString = categories.map(encodeURIComponent).join(",");
+            queryString += `&categories=${categoriesString}`;
+        }
+
+        // Append sortByPrice is available
+        if (sortByPrice) {
+            queryString += `&sortByPrice=${encodeURIComponent(sortByPrice)}`;
+        }
+
+        return {
+            url: queryString,
+            method: "GET",
+        }
+    }
+})*/

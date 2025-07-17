@@ -142,9 +142,9 @@ const CourseTab = () => {
                     </CardDescription>
                 </div>
                 <div className='space-x-2'>
-                    <Button disabled={getCourseByIdData.course.lectures.length === 0} variant="outline" onClick={() => publishUnpublishHandler(getCourseByIdData.course.isPublished ? "false" : "true")}>
+                    <Button disabled={getCourseByIdData.course.lectures.length === 0} variant="outline" onClick={() => publishUnpublishHandler(getCourseByIdData?.course.isPublished ? "false" : "true")}>
                         {
-                            getCourseByIdData.course.isPublished ? "Unpublish" : "Publish"
+                            getCourseByIdData?.course.isPublished ? "Unpublish" : "Publish"
                         }
                     </Button>
                     <Button onClick={removeCourseHandler}>Remove Course</Button>

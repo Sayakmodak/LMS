@@ -1,10 +1,11 @@
 import express from 'express';
 import { isAuthenticated } from '../middlewares/isAuthenticated.js';
-import { createCourse, getAllPublishedCourse, getCourseById, getCreatorCourse, removeCourse, togglePublish, updateCourse } from '../controllers/courseController.js';
+import { createCourse, getAllPublishedCourse, getCourseById, getCreatorCourse, removeCourse, searchQuery, togglePublish, updateCourse } from '../controllers/courseController.js';
 import upload from '../utils/multer.js';
 import { createLecture, getAllLectures, getLectuteById, removeLecture, updateLecture } from '../controllers/lectureController.js';
 const router = express.Router();
 
+router.get("/search", isAuthenticated, searchQuery);
 router.post("/create-course", isAuthenticated, createCourse);
 router.get("/published-course", isAuthenticated, getAllPublishedCourse);
 router.get("/", isAuthenticated, getCreatorCourse);
