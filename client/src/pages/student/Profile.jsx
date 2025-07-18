@@ -21,7 +21,9 @@ function Profile() {
 
     const { user } = data ?? {}; // this data returns whatever has been returned from the corrosponding controller
 
-    // console.log(user);
+    // console.log(user, user.name);
+    const courseCreatorName = user?.name;
+
     const onChangeHandler = (e) => {
         const file = e.target.files?.[0];
         if (file) setUserImg(file);
@@ -115,7 +117,7 @@ function Profile() {
                 <div className='grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-4 my-5'>
                     {
                         user.enrolledCourses.length === 0 ? <p>You have not enrolled in any course yet</p> : user.enrolledCourses.map((course) => {
-                            return <Course course={course} key={course._id} />
+                            return <Course course={course} key={course._id} courseCreatorName={courseCreatorName} />
                         })
                     }
                 </div>

@@ -33,7 +33,7 @@ const courseShema = new mongoose.Schema({
     ],
     lectures: [
         {
-            type: mongoose.Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,   // the ids of lectures will be stored 
             ref: "Lecture"
         }
     ],

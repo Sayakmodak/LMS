@@ -22,7 +22,8 @@ import { useSelector } from 'react-redux';
 
 const Navbar = () => {
     const user = useSelector((state) => state.auth.user);
-    // console.log(user);
+    console.log(user);
+    const role = "instructor";
     const [logoutUser, { data, error, isError, isSuccess }] = useLogoutUserMutation();
     const navigate = useNavigate();
 
@@ -70,10 +71,10 @@ const Navbar = () => {
                                     <DropdownMenuItem onClick={logoutHandler}>Log out</DropdownMenuItem>
                                 </DropdownMenuGroup>
                                 {
-                                    user.role === "instructor" && (
+                                    role === "instructor" && (
                                         <>
                                             <DropdownMenuSeparator />
-                                            <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                                            <DropdownMenuItem><Link to="/admin/dashboard">Dashboard</Link></DropdownMenuItem>
                                         </>
                                     )
                                 }

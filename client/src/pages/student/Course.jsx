@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const Course = ({ course }) => {
+const Course = ({ course, courseCreatorName }) => {
     return (
         <Link to={`/course-detail/${course._id}`}>
             <Card className='overflow-hidden rounded-lg dark:bg-gray-800 bg-white shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300'>
@@ -20,7 +20,7 @@ const Course = ({ course }) => {
                                     <AvatarImage src={course?.creator?.userProfileImg || "https://github.com/shadcn.png"} alt="@shadcn" />
                                     <AvatarFallback>CN</AvatarFallback>
                                 </Avatar>
-                                <h1 className='font-medium text-sm'>{course?.creator?.name || "Name"}</h1>
+                                <h1 className='font-medium text-sm'>{course?.creator?.name || courseCreatorName || "Name"}</h1>
                             </div>
                             <Badge className='' variant="secondary">
                                 {course.courseLevel?.charAt(0)?.toUpperCase() + course?.courseLevel?.slice(1) || "Level"}
