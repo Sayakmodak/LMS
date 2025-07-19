@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get("/search", isAuthenticated, searchQuery);
 router.post("/create-course", isAuthenticated, createCourse);
-router.get("/published-course", isAuthenticated, getAllPublishedCourse);
+router.get("/published-course", getAllPublishedCourse); // here, no need to provide isAuthenticated, because we need to show all the published course even if the user is not logged in
 router.get("/", isAuthenticated, getCreatorCourse);
 router.put("/:courseId", isAuthenticated, upload.single("courseThumbnail"), updateCourse);
 router.get("/:courseId", isAuthenticated, getCourseById);

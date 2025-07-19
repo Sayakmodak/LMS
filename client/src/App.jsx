@@ -16,6 +16,8 @@ import EditLecture from './pages/admin/lecture/EditLecture'
 import CourseDetail from './pages/student/CourseDetail'
 import CourseProgress from './pages/student/CourseProgress'
 import SearchPage from './pages/student/SearchPage'
+import { AdminRoute, AuthenticatedUser, NotAuthenticatedUser } from './comp/ProtectedRoute'
+import { ProgressPageProtectedRoute } from './comp/ProgressPageProtectedRoute'
 
 const router = createBrowserRouter([
   {
@@ -34,33 +36,63 @@ const router = createBrowserRouter([
       },
       {
         path: "login",
-        element: <Login />
+        element: (
+          <AuthenticatedUser>
+            <Login />
+          </AuthenticatedUser>
+        )
       },
       {
         path: "my-learning",
-        element: <MyLearning />
+        element: (
+          <NotAuthenticatedUser>
+            <MyLearning />
+          </NotAuthenticatedUser>
+        )
       },
       {
         path: "profile",
-        element: <Profile />
+        element: (
+          <NotAuthenticatedUser>
+            <Profile />
+          </NotAuthenticatedUser>
+        )
       },
       {
         path: "course/search",
-        element: <SearchPage />
+        element:
+          (
+            <NotAuthenticatedUser>
+              <SearchPage />
+            </NotAuthenticatedUser>
+          )
       },
       {
         path: "course-detail/:courseId",
-        element: <CourseDetail />
+        element: (
+          <NotAuthenticatedUser>
+            <CourseDetail />
+          </NotAuthenticatedUser>
+        )
       },
       {
         path: "course-progress/:courseId",
-        element: <CourseProgress />
+        element: (
+          <NotAuthenticatedUser>
+            <ProgressPageProtectedRoute>
+              <CourseProgress />
+            </ProgressPageProtectedRoute>
+          </NotAuthenticatedUser>
+        )
       },
 
       // admin routes starts from here
       {
         path: "admin",
-        element: <Sidebar />,
+        element: (
+          <AdminRoute>
+            <Sidebar />
+          </AdminRoute>),
         children: [
           {
             path: "dashboard",
