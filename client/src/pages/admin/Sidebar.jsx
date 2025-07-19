@@ -1,23 +1,23 @@
-import { ChartNoAxesColumn, Library, SquareLibrary } from 'lucide-react'
+import { ChartNoAxesColumn, SquareLibrary } from 'lucide-react'
 import React from 'react'
 import { Link, Outlet } from 'react-router-dom'
 
 const Sidebar = () => {
     return (
         <div className='flex'>
-            <div className='hidden lg:block w-[250px] sm:w-[250px] space-y-8 border-r border-gray-300 dark:border-gray-700 p-5 sticky top-0  h-screen'>
+            <div className='hidden lg:block w-[250px] sm:w-[250px] space-y-8 border-r border-gray-300 dark:border-gray-700 p-5 sticky top-0  h-screen dark:bg-[#020817]'>
                 <div className='space-y-4 mt-20'>
                     <Link to="/admin/dashboard" className='flex items-center gap-2'>
-                        <ChartNoAxesColumn size={22} />
-                        <h1>Dashboard</h1>
+                        <ChartNoAxesColumn size={22} className='dark:text-white' />
+                        <h1 className='dark:text-white'>Dashboard</h1>
                     </Link>
                     <Link to="/admin/course" className='flex items-center gap-2'>
-                        <SquareLibrary size={22} />
-                        <h1>Courses</h1>
+                        <SquareLibrary size={22} className='dark:text-white' />
+                        <h1 className='dark:text-white'>Courses</h1>
                     </Link>
                 </div>
             </div>
-            <div className="flex-1 px-5 bg-white">
+            <div className="flex-1 px-5 bg-white dark:bg-[#020817]">
                 <Outlet />
             </div>
         </div>

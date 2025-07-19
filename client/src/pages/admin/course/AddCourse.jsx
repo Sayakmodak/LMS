@@ -41,13 +41,13 @@ const AddCourse = () => {
 
     return (
         <div className='flex-1 mx-10 mt-24'>
-            <div className='mb-4'>
+            <div className='mb-4 dark:text-white'>
                 <h1 className='font-bold text-xl'>
                     Let's add course, add some basic details for your course
                 </h1>
                 <p className='text-sm'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, omnis</p> </div>
 
-            <div className='space-y-4'>
+            <div className='space-y-4 dark:text-white'>
                 <div>
                     <Label className="mb-1">Title</Label>
                     <Input type="text" placeholder='your course name' name="courseTitle" value={courseTitle} onChange={(e) => setCourseTitle(e.target.value)} />

@@ -18,6 +18,7 @@ import CourseProgress from './pages/student/CourseProgress'
 import SearchPage from './pages/student/SearchPage'
 import { AdminRoute, AuthenticatedUser, NotAuthenticatedUser } from './comp/ProtectedRoute'
 import { ProgressPageProtectedRoute } from './comp/ProgressPageProtectedRoute'
+import { ThemeProvider } from './comp/ThemeProvider'
 
 const router = createBrowserRouter([
   {
@@ -90,9 +91,10 @@ const router = createBrowserRouter([
       {
         path: "admin",
         element: (
-          <AdminRoute>
-            <Sidebar />
-          </AdminRoute>),
+          // <AdminRoute>
+          <Sidebar />
+          // </AdminRoute>
+        ),
         children: [
           {
             path: "dashboard",
@@ -128,7 +130,9 @@ function App() {
 
   return (
     <main>
-      <RouterProvider router={router} />
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </main>
   )
 }

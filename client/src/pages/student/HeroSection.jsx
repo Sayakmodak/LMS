@@ -28,7 +28,7 @@ const HeroSection = () => {
 
                     <Button type="submit" className="bg-blue-600 dark:bg-blue-700 text-white px-6 py-3 rounded-r-full hover:bg-blue-700 dark:hover:bg-blue-800" onClick={searchHandler}>Search</Button>
                 </form>
-                <Button className="bg-white dark:bg-gray-800 text-blue-600 rounded-full hover:bg-gray-200" onClick={() => navigate(`/course/search?query`)}>Explore Courses</Button>
+                <Button className="bg-white dark:bg-gray-800 text-blue-600 rounded-full hover:bg-gray-200 dark:text-white" onClick={() => navigate(`/course/search?query`)}>Explore Courses</Button>
             </div>
         </div>
     )

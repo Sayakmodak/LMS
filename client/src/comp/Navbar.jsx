@@ -23,7 +23,7 @@ import { useSelector } from 'react-redux';
 const Navbar = () => {
     const user = useSelector((state) => state.auth.user);
     console.log(user);
-    const role = "instructor";
+    // const role = "instructor";
     const [logoutUser, { data, error, isError, isSuccess }] = useLogoutUserMutation();
     const navigate = useNavigate();
 
@@ -42,13 +42,13 @@ const Navbar = () => {
     }, [isSuccess, data])
 
     return (
-        <div className='h-16 dark:bg-[#0a0a0a] bg-white border-b dark:border-b-gray-200 fixed top-0 left-0 right-0 duration-300 z-10'>
+        <div className='h-16 dark:bg-[#020817] bg-white border-b dark:border-b-gray-200 fixed top-0 left-0 right-0 duration-300 z-10'>
             {/* Desktop */}
             <div className='max-w-7xl md:flex mx-auto hidden justify-between items-center gap-10 h-full px-12'>
                 <Link to="/">
                     <div className='flex items-center gap-2'>
-                        <School size={"30"} />
-                        <h1 className='hidden md:block font-extrabold text-2xl'>E-Learning</h1>
+                        <School size={"30"} className="dark:text-white" />
+                        <h1 className='hidden md:block font-extrabold text-2xl dark:text-white'>E-Learning</h1>
                     </div>
                 </Link>
 
@@ -71,7 +71,7 @@ const Navbar = () => {
                                     <DropdownMenuItem onClick={logoutHandler}>Log out</DropdownMenuItem>
                                 </DropdownMenuGroup>
                                 {
-                                    role === "instructor" && (
+                                    user?.role === "instructor" && (
                                         <>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem><Link to="/admin/dashboard">Dashboard</Link></DropdownMenuItem>

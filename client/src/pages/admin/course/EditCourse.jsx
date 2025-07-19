@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 const EditCourse = () => {
     return (
-        <div className='mx-10 mt-24 flex flex-col justify-between'>
+        <div className='mx-10 mt-24 flex flex-col justify-between dark:bg-[#020817]'>
             <div className='flex items-center justify-between mb-5'>
                 <h1 className='font-bold text-xl'>Add detail information regarding the course</h1>
                 <Link to="lecture">
