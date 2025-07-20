@@ -186,6 +186,9 @@ const CourseTab = () => {
                                         <SelectItem value="Frontend Development">Frontend Development</SelectItem>
                                         <SelectItem value="Javascript">Javascript</SelectItem>
                                         <SelectItem value="React Js">React Js</SelectItem>
+                                        <SelectItem value="Docker">Docker</SelectItem>
+                                        <SelectItem value="Python">Python</SelectItem>
+                                        <SelectItem value="Backend Development">Backend Development</SelectItem>
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>

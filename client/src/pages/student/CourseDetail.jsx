@@ -41,8 +41,8 @@ const CourseDetail = () => {
                     <p>Students enrolled: {course?.enrolledStudents.length}</p>
                 </div>
             </div>
-            <div className='mx-auto my-5 px-4 md:px-8 flex flex-col lg:flex-row justify-between border border-red-500'>
-                <div className='w-full lg:w-1/2 space-y-5 border border-green-500'>
+            <div className='mx-auto my-5 px-4 md:px-8 flex flex-col lg:flex-row justify-between'>
+                <div className='w-full lg:w-1/2 space-y-5'>
                     <h1 className='font-bold text-xl md:text-2xl'>Description</h1>
                     {
                         course?.description ? (<p className='text-sm' dangerouslySetInnerHTML={{ __html: course?.description }} />) : (<p className='text-sm'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus ea incidunt magnam eveniet reprehenderit velit quidem odio ducimus vero ratione?</p>)
@@ -68,10 +68,10 @@ const CourseDetail = () => {
                         </CardContent>
                     </Card>
                 </div>
-                <div className='lg:w-1/3 border border-green-500'>
+                <div className='lg:w-1/3'>
                     <Card>
                         <CardContent className="p-4 flex flex-col">
-                            <div className='w-full aspect-video mb-4 border border-red-700'>
+                            <div className='w-full aspect-video mb-4'>
                                 <ReactPlayer
                                     width={"100%"}
                                     height={"100%"}

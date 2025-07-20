@@ -165,7 +165,7 @@ export const togglePublish = async (req, res) => {
             })
         }
 
-        course.isPublished = publish;
+        course.isPublished = publish;   // Boolean value 
         await course.save();
 
         let coursePublishStatus;
