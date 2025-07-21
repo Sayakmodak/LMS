@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useCreateLectureMutation, useGetAllLecturesQuery } from '@/features/api/courseApi'
 import { toast } from 'sonner'
-import { Edit, Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import Lecture from './Lecture'
 
 const CreateLecture = () => {
@@ -21,6 +21,7 @@ const CreateLecture = () => {
 
     const handleLecture = async () => {
         await createLecture({ courseId, lectureTitle }); // will be available in the req.body
+        setLectureTitle("");
     }
 
 
